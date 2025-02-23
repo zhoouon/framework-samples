@@ -1,0 +1,2 @@
+com.zhoouon.starter.datasource.configuration.MartDsAutoConfiguration
+com.zhoouon.starter.datasource.configuration.MartMapperScanConfiguration

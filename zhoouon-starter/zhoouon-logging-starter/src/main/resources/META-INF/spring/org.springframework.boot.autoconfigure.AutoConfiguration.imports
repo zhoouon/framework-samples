@@ -1,0 +1,3 @@
+com.zhoouon.starter.logging.init.TtlMDCAdapterInitializer
+com.zhoouon.starter.logging.filter.FeignInterceptor
+com.zhoouon.starter.logging.filter.WebTraceFilter

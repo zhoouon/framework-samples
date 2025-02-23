@@ -2,26 +2,26 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.framework</groupId>
-    <artifactId>framework-samples</artifactId>
+    <groupId>com.zhoouon</groupId>
+    <artifactId>zhoouon-samples</artifactId>
     <version>${revision}</version>
 
-    <name>framework-samples</name>
+    <name>zhoouon-samples</name>
     <packaging>pom</packaging>
 
     <modules>
-        <module>framework-redis</module>
-        <module>framework-seata</module>
-        <module>framework-proxy</module>
-        <module>framework-shardingsphere</module>
-        <module>framework-concurrent</module>
-        <module>framework-lock</module>
-        <module>framework-minio</module>
-        <module>framework-dom4j</module>
-        <module>framework-starter</module>
-        <module>framework-encrypt</module>
-        <module>framework-pf4j</module>
-        <module>framework-netty</module>
+        <module>zhoouon-redis</module>
+        <module>zhoouon-seata</module>
+        <module>zhoouon-proxy</module>
+        <module>zhoouon-shardingsphere</module>
+        <module>zhoouon-concurrent</module>
+        <module>zhoouon-lock</module>
+        <module>zhoouon-minio</module>
+        <module>zhoouon-dom4j</module>
+        <module>zhoouon-starter</module>
+        <module>zhoouon-encrypt</module>
+        <module>zhoouon-pf4j</module>
+        <module>zhoouon-netty</module>
     </modules>
 
     <properties>
@@ -77,8 +77,8 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>com.framework</groupId>
-                <artifactId>framework-dependencies</artifactId>
+                <groupId>com.zhoouon</groupId>
+                <artifactId>zhoouon-dependencies</artifactId>
                 <version>${revision}</version>
                 <type>pom</type>
                 <scope>import</scope>

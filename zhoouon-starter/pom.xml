@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.zhoouon</groupId>
+        <artifactId>zhoouon-samples</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <artifactId>zhoouon-starter</artifactId>
+    <description>公共组件模块</description>
+    <packaging>pom</packaging>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+        <module>zhoouon-logging-starter</module>
+        <module>zhoouon-id-starter</module>
+        <module>zhoouon-datasource-starter</module>
+        <module>zhoouon-common-starter</module>
+        <module>zhoouon-openfeign-starter</module>
+        <module>zhoouon-web-starter</module>
+        <module>zhoouon-rocketmq-starter</module>
+        <module>zhoouon-framework-core</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.zhoouon</groupId>
+                <artifactId>zhoouon-dependencies</artifactId>
+                <version>${revision}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
