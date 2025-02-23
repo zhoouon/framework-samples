@@ -9,6 +9,6 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>zhoouon-framework-core</artifactId>
+    <artifactId>zhoouon-core-spring-boot-starter</artifactId>
 
 </project>

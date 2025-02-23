@@ -69,22 +69,22 @@
         <dependencies>
             <dependency>
                 <groupId>com.zhoouon</groupId>
-                <artifactId>zhoouon-id-starter</artifactId>
+                <artifactId>zhoouon-id-spring-boot-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.zhoouon</groupId>
-                <artifactId>zhoouon-common-starter</artifactId>
+                <artifactId>zhoouon-common-spring-boot-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.zhoouon</groupId>
-                <artifactId>zhoouon-datasource-starter</artifactId>
+                <artifactId>zhoouon-datasource-spring-boot-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.zhoouon</groupId>
-                <artifactId>zhoouon-logging-starter</artifactId>
+                <artifactId>zhoouon-logging-spring-boot-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -94,17 +94,17 @@
             </dependency>
             <dependency>
                 <groupId>com.zhoouon</groupId>
-                <artifactId>zhoouon-openfeign-starter</artifactId>
+                <artifactId>zhoouon-openfeign-spring-boot-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.zhoouon</groupId>
-                <artifactId>zhoouon-framework-core</artifactId>
+                <artifactId>zhoouon-core-spring-boot-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.zhoouon</groupId>
-                <artifactId>zhoouon-rocketmq-starter</artifactId>
+                <artifactId>zhoouon-rocketmq-spring-boot-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
