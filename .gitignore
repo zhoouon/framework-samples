@@ -40,3 +40,4 @@ build/
 /logs
 /framework-shardingsphere/logs
 **/.flattened-pom.xml
+.java-version
