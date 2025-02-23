@@ -23,11 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * @author jam
- * 公众号：JAVA日知录
- * @date 2023/11/27 21:37
- */
 @Configuration
 @EnableConfigurationProperties(RocketEnhanceProperties.class)
 public class RocketMQEnhanceAutoConfiguration {
@@ -77,7 +72,7 @@ public class RocketMQEnhanceAutoConfiguration {
      * 环境隔离配置
      */
     @Bean
-    @ConditionalOnProperty(name = "dailymart.rocketmq.enabledIsolation", havingValue = "true")
+    @ConditionalOnProperty(name = "zhoouon.rocketmq.enabledIsolation", havingValue = "true")
     public EnvironmentIsolationConfig environmentSetup(RocketEnhanceProperties rocketEnhanceProperties) {
         return new EnvironmentIsolationConfig(rocketEnhanceProperties);
     }

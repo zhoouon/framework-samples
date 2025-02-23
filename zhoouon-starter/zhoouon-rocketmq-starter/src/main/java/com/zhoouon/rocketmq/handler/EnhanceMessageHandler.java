@@ -11,9 +11,6 @@ import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 
 /**
- * @author jam
- * 公众号：JAVA日知录
- * @date 2023/11/27 21:31
  * 抽象消息监听器，封装了所有公共处理业务，如
  * 1、基础日志记录
  * 2、异常处理

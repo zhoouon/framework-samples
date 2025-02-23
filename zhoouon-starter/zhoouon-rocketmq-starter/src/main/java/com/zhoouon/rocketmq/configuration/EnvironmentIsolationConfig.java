@@ -5,11 +5,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.util.StringUtils;
 
-/**
- * @author jam
- * 公众号：JAVA日知录
- * @date 2023/11/27 21:36
- */
 public class EnvironmentIsolationConfig implements BeanPostProcessor {
 
     private final RocketEnhanceProperties rocketEnhanceProperties;
