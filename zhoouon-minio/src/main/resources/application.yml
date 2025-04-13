@@ -10,4 +10,4 @@ spring:
     access-key: dAMaxkWaXUD1CV1JHbqw
     secret-key: AXt3SD0JFkDENFbMeJKOOQb5wj8KvabZWu33Rs84
     url: http://192.168.18.14:9090  #访问地址
-    bucket-name: wanghui
+    bucket-name: zhoouon

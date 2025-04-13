@@ -17,10 +17,7 @@
         <module>zhoouon-concurrent</module>
         <module>zhoouon-lock</module>
         <module>zhoouon-minio</module>
-        <module>zhoouon-dom4j</module>
         <module>zhoouon-starter</module>
-        <module>zhoouon-encrypt</module>
-        <module>zhoouon-pf4j</module>
         <module>zhoouon-netty</module>
     </modules>
 

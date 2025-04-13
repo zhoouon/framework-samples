@@ -36,9 +36,9 @@
     <minio.version>8.5.5</minio.version>
     <nimbus-jose-jwt.version>9.31</nimbus-jose-jwt.version>
     <dynamic-datasource-spring.version>3.5.0</dynamic-datasource-spring.version>
-    <logback-classic.version>1.2.3</logback-classic.version>
+    <logback-classic.version>1.2.13</logback-classic.version>
     <jmh.version>1.36</jmh.version>
-    <logback-core.version>1.2.3</logback-core.version>
+    <logback-core.version>1.2.13</logback-core.version>
     <mybatis-plus-dynamic.version>4.3.0</mybatis-plus-dynamic.version>
     <commons-beanutils.version>1.9.4</commons-beanutils.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
