@@ -31,7 +31,7 @@ public class RSAUtils {
 
     /**
      * 生成RSA密钥对
-     * @author Jam
+     * @author zhoudong
      * @return java.util.Map<java.lang.String,java.lang.String>
      * @date 2022/7/12 14:48
      */
@@ -62,7 +62,7 @@ public class RSAUtils {
 
     /**
      * 公钥加密
-     * @author Jam
+     * @author zhoudong
      * @param encryptStr 待加密内容
      * @param publicKey  公钥
      */
@@ -85,7 +85,7 @@ public class RSAUtils {
 
     /**
      * 私钥解密
-     * @author jam
+     * @author zhoudong
      * @date 2023/11/14 20:41
      * @param decryptStr 待解密内容
      * @param privateKey 私钥

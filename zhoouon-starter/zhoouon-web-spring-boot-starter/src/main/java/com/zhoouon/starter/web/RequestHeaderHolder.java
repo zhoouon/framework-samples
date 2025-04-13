@@ -6,8 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author jam
- * 公众号：JAVA日知录
+ * @author zhoudong
  * @date 2024/3/18 10:59
  * 线程安全的请求头信息持有类
  */

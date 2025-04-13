@@ -1,7 +1,10 @@
 package com.zhoouon.starter.logging.utils;
 
+import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import org.slf4j.MDC;
+
+import java.sql.SQLOutput;
 
 public class MDCTraceUtils {
     /**
@@ -48,7 +51,7 @@ public class MDCTraceUtils {
      * 创建traceId
      */
     public static String createTraceId() {
-        return IdUtil.fastSimpleUUID();
+        return IdUtil.getSnowflake(1,1).nextIdStr() + "-" + Thread.currentThread().getName();
     }
 
 }

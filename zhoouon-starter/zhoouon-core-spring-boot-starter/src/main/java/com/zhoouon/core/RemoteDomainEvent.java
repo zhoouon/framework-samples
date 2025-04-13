@@ -26,8 +26,7 @@ import java.time.LocalDateTime;
 
 /**
  * 基础消息模型
- * @author jam
- * 公众号：JAVA日知录
+ * @author zhoudong
  * @date 2023/11/27 21:30
  */
 @Data

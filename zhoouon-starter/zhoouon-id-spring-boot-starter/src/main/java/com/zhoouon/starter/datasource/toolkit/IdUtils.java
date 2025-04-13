@@ -29,7 +29,7 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * @author jam
+ * @author zhoudong
  */
 @UtilityClass
 public final class IdUtils {

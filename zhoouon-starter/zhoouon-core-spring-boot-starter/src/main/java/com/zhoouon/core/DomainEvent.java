@@ -22,7 +22,7 @@ package com.zhoouon.core;
 /**
  * Description:
  * 领域事件
- * @author Jam
+ * @author zhoudong
  * @date 2023/7/19 16:49
  */
 public interface DomainEvent {
