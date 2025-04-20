@@ -12,7 +12,7 @@ rules:
       #表名
       router_config:
         #数据节点，所有表名
-        actualDataNodes: ds0.router_config_0$->{0..9},ds0.router_config_$->{10..49}
+        actualDataNodes: ds0.router_config_$->{0..9},ds0.router_config_$->{10..49}
         #分表策略
         tableStrategy:
           #分表类型，单列作为分表键
