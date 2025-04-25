@@ -47,6 +47,7 @@
     <java.version>17</java.version>
     <commons-collections4.version>4.4</commons-collections4.version>
     <knife4j.version>4.3.0</knife4j.version>
+    <mapstruct.version>1.4.2.Final</mapstruct.version>
     <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
     <guava.version>32.1.2-jre</guava.version>
     <aspectjrt.version>1.9.21</aspectjrt.version>
@@ -345,6 +346,11 @@
         <groupId>org.apache.rocketmq</groupId>
         <artifactId>rocketmq-spring-boot-starter</artifactId>
         <version>${rocketmq.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct</artifactId>
+        <version>${mapstruct.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
