@@ -5,31 +5,33 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.zhoouon</groupId>
-        <artifactId>zhoouon-starter</artifactId>
+        <artifactId>zhoouon-samples</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>zhoouon-web-spring-boot-starter</artifactId>
+    <artifactId>zhoouon-webflux</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <java.version>17</java.version>
+    </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.zhoouon</groupId>
             <artifactId>zhoouon-common-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-            <optional>true</optional>
+            <groupId>com.zhoouon</groupId>
+            <artifactId>zhoouon-logging-spring-boot-starter</artifactId>
         </dependency>
-        <!--解决 MAC M1 启动问题-->
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-resolver-dns-native-macos</artifactId>
-            <classifier>osx-aarch_64</classifier>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
     </dependencies>
 </project>

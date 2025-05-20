@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>com.zhoouon</groupId>
-            <artifactId>zhoouon-web-starter</artifactId>
+            <artifactId>zhoouon-web-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>io.github.openfeign</groupId>

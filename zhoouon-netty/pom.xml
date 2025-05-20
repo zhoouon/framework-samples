@@ -6,21 +6,20 @@
     <parent>
         <groupId>com.zhoouon</groupId>
         <artifactId>zhoouon-samples</artifactId>
-        <version>2024.1.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>zhoouon-netty</artifactId>
+    <packaging>jar</packaging>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>17</java.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.zhoouon</groupId>
-            <artifactId>zhoouon-web-starter</artifactId>
+            <artifactId>zhoouon-web-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.zhoouon</groupId>
@@ -33,7 +32,6 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.107.Final</version>
         </dependency>
     </dependencies>
 </project>
