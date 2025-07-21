@@ -1,0 +1,37 @@
+server:
+  port: 8089
+spring:
+  application:
+    name: sharding-sphere
+  cloud:
+    nacos:
+      config:
+        server-addr: ${NACOST_HOST:127.0.0.1}:${NACOST_PORT:8848}
+        file-extension: yaml
+        namespace: e6d8ef66-7fd2-4a35-99e1-3b8b1ff4fd9b
+        refresh-enabled: true
+        group: ${NACOST_GROUP:DEFAULT_GROUP}
+        shared-configs:
+          - data-id: sharding-config.yaml
+            group: ${NACOST_GROUP:DEFAULT_GROUP}
+            refresh: true
+      discovery:
+        enabled: true
+        server-addr: ${NACOST_HOST:127.0.0.1}:${NACOST_PORT:8848}
+        namespace: e6d8ef66-7fd2-4a35-99e1-3b8b1ff4fd9b
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**.xml
+  type-aliases-package: com.zhoouon.sharding.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # MyBatis 配置
+    map-underscore-to-camel-case: true
+    global-config:
+      # 全局配置
+      db-config:
+        # 数据库配置
+        id-type: auto
+logging:
+  level:
+    org.apache.shardingsphere: debug

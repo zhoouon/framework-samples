@@ -66,6 +66,7 @@
         <!-- bean 对象复制 -->
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <netty.version>4.1.107.Final</netty.version>
+        <sharding-sphere.version>5.4.1</sharding-sphere.version>
     </properties>
 
     <dependencyManagement>
@@ -376,6 +377,14 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
                 <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>
