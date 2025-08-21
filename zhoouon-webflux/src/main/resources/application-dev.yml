@@ -1,1 +1,6 @@
+spring:
+  output:
+    ansi:
+      enabled: always # 输出彩色日志
+
 

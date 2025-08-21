@@ -23,6 +23,7 @@
         <module>zhoouon-web-spring-boot-starter</module>
         <module>zhoouon-rocketmq-spring-boot-starter</module>
         <module>zhoouon-core-spring-boot-starter</module>
+        <module>zhoouon-monitor-spring-boot-starter</module>
     </modules>
 
     <dependencyManagement>

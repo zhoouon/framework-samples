@@ -7,6 +7,7 @@ import com.zhoouon.sharding.entity.RouterConfig;
 import com.zhoouon.sharding.mapper.RouterConfigMapper;
 import com.zhoouon.sharding.service.RouterConfigService;
 import com.zhoouon.starter.common.exception.BaseException;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class RouterConfigServiceImpl extends ServiceImpl<RouterConfigMapper, Rou
     private BaseMapper baseMapper;
 
     @Override
+    @GlobalTransactional(name = "create-order", rollbackFor = Exception.class)
     public Integer add(RouterConfig routerConfig) {
         return baseMapper.insert(routerConfig);
     }
