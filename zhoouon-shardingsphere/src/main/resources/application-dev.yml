@@ -1,0 +1,35 @@
+spring:
+  output:
+    ansi:
+      enabled: always # 输出彩色日志
+  shardingsphere:
+    mode:
+      repository:
+        type: JDBC
+      type: Standalone
+    datasource:
+      names: ds0
+      ds0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: "jdbc:mysql://127.0.0.1:3306/sharding-sphere?characterEncoding=utf8&useAffectedRows=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true"
+        username: root
+        password: 12345678
+    props:
+      sql-show: true
+    rules:
+      sharding:
+        sharding-algorithms:
+          id-suffix-mode-50:
+            type: CLASS_BASED
+            props:
+              strategy: COMPLEX
+              algorithmClassName: com.zhoouon.sharding.config.OrderGenComplexTableAlgorithm
+              sharding-count: 50
+        tables:
+          router_config:
+            actual-data-nodes: ds0.router_config_$->{0..49}
+            table-strategy:
+              complex:
+                sharding-algorithm-name: id-suffix-mode-50
+                sharding-columns: id
