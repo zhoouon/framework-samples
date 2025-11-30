@@ -1,6 +1,8 @@
 server:
   port: 8089
 spring:
+  profiles:
+    active: dev
   application:
     name: sharding-sphere
   cloud:
@@ -15,8 +17,48 @@ spring:
         namespace: 59be4370-3745-47e6-b406-3d196ad5b2b6
         username: nacos
         password: nacos
-#seata
+  # 输出彩色日志
+  output:
+    ansi:
+      enabled: always
+
+# 分库分表相关配置信息
+  shardingsphere:
+    mode:
+      type: Standalone
+#      repository:
+#        type: JDBC
+    datasource:
+      names: ds0
+      ds0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/sharding-sphere?characterEncoding=utf8&useAffectedRows=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        username: root
+        password: 12345678
+    props:
+      sql-show: true
+    rules:
+      sharding:
+        sharding-algorithms:
+          id-suffix-mode-50:
+            type: CLASS_BASED
+            props:
+              strategy: COMPLEX
+              algorithmClassName: com.zhoouon.sharding.config.OrderGenComplexTableAlgorithm
+              sharding-count: 50
+        tables:
+          router_config:
+            actual-data-nodes: ds0.router_config_$->{0..49}
+            table-strategy:
+              complex:
+                sharding-algorithm-name: id-suffix-mode-50
+                sharding-columns: id
+#seata 配置相关信息
 seata:
+  enable-auto-data-source-proxy: false
+  application-id: sharding-sphere
+  enabled: true
   #事务分组 要和nacos seataServer.properties 中的service.vgroupMapping.default_tx_group 一致
   tx-service-group: default_tx_group
   registry:
@@ -28,6 +70,7 @@ seata:
       application: seata-server
       username: nacos
       password: nacos
+      namespace: 59be4370-3745-47e6-b406-3d196ad5b2b6
       group: SEATA_GROUP
   config:
     #配置seata的配置中心，可以读取关于seata client 的一些配置
@@ -37,14 +80,12 @@ seata:
       username: nacos
       password: nacos
       group: SEATA_GROUP
+      namespace: 59be4370-3745-47e6-b406-3d196ad5b2b6
       data-id: seataServer.properties
 
-  profiles:
-    active: dev
-
-## mybatis-plus
+  # mybatis-plus 相关配置信息
 mybatis-plus:
-  mapper-locations: classpath:/mapper/**.xml
+  mapper-locations: classpath:/mapper/**/*.xml
   type-aliases-package: com.zhoouon.sharding.entity
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -55,6 +96,7 @@ mybatis-plus:
       db-config:
         # 数据库配置
         id-type: auto
+
 logging:
   level:
-    org.apache.shardingsphere: debug
+    org.apache.shardingsphere: info

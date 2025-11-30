@@ -1,6 +1,7 @@
 package com.zhoouon.sharding.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhoouon.sharding.entity.RouterConfig;
@@ -46,7 +47,7 @@ public class RouterConfigServiceImpl extends ServiceImpl<RouterConfigMapper, Rou
     public RouterConfig selectById(Long id) {
         LambdaQueryWrapper<RouterConfig> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(RouterConfig::getId, id);
-        RouterConfig config = this.getOne(queryWrapper);
+        RouterConfig config = routerConfigMapper.selectById(queryWrapper);
         if (Objects.isNull(config)) {
             throw new BaseException("0202B052", id);
         }
@@ -55,7 +56,7 @@ public class RouterConfigServiceImpl extends ServiceImpl<RouterConfigMapper, Rou
 
     @Override
     public List<RouterConfig> selectAll() {
-        return this.list();
+        return routerConfigMapper.selectList(null);
     }
 
     @Async("AsyncThreadPoolExecutor")

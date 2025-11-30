@@ -14,7 +14,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  * @Version: 1.0.0
  **/
 @SpringBootApplication
-@MapperScan(basePackages = {"com.zhoouon.sharding.mapper"})
+@MapperScan("com.zhoouon.sharding.mapper")
 @EnableAspectJAutoProxy(exposeProxy = true)
 @RefreshScope
 @EnableDiscoveryClient
