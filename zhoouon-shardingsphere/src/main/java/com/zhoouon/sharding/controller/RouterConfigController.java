@@ -7,12 +7,14 @@ import com.zhoouon.starter.common.result.BaseRequestParam;
 import com.zhoouon.starter.common.result.BaseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author: zhoudong
@@ -40,7 +42,7 @@ public class RouterConfigController {
     }
 
     @Function(descreption = "路由器配置信息-查询所有")
-    @PostMapping("/selectAll")
+    @GetMapping("/selectAll")
     public BaseResult<List<RouterConfig>> selectAll() {
         return BaseResult.buildSuccessData(routerConfigService.selectAll());
     }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
@@ -23,7 +24,7 @@ import java.util.concurrent.CountDownLatch;
  * @Date: 2024-07-06 14:39
  * @Version: 1.0.0
  **/
-@Service
+@Service("RouterConfigService1")
 public class RouterConfigServiceImpl extends ServiceImpl<RouterConfigMapper, RouterConfig> implements RouterConfigService {
 
     @Autowired
@@ -47,7 +48,7 @@ public class RouterConfigServiceImpl extends ServiceImpl<RouterConfigMapper, Rou
     public RouterConfig selectById(Long id) {
         LambdaQueryWrapper<RouterConfig> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(RouterConfig::getId, id);
-        RouterConfig config = routerConfigMapper.selectById(queryWrapper);
+        RouterConfig config = routerConfigMapper.selectOne(queryWrapper);
         if (Objects.isNull(config)) {
             throw new BaseException("0202B052", id);
         }
@@ -56,7 +57,9 @@ public class RouterConfigServiceImpl extends ServiceImpl<RouterConfigMapper, Rou
 
     @Override
     public List<RouterConfig> selectAll() {
-        return routerConfigMapper.selectList(null);
+        LambdaQueryWrapper<RouterConfig> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.last("ORDER BY RAND() LIMIT 10");
+        return routerConfigMapper.selectList(queryWrapper);
     }
 
     @Async("AsyncThreadPoolExecutor")
