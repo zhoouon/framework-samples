@@ -36,7 +36,7 @@
         <spring.cloud.alibaba.version>2022.0.0.2</spring.cloud.alibaba.version>
         <maven-flatten.version>1.5.0</maven-flatten.version>
         <spotless-maven-plugin.version>2.22.1</spotless-maven-plugin.version>
-        <spring-ai-bom.version>2.0.1</spring-ai-bom.version>
+        <spring-ai-bom.version>1.0.0</spring-ai-bom.version>
     </properties>
 
     <repositories>

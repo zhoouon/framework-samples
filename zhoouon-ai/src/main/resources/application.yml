@@ -1,7 +1,8 @@
 spring:
   application:
     name: zhoouon-ai
-
   ai:
     deepseek:
       api-key:
+      chat:
+        model: deepseek-chat

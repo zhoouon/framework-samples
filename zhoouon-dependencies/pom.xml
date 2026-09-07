@@ -68,7 +68,6 @@
         <netty.version>4.1.107.Final</netty.version>
         <spring.cloud.openfeign.version>4.1.2</spring.cloud.openfeign.version>
         <spring-boot-aop.version>3.2.7</spring-boot-aop.version>
-        <spring-ai-starter-model-deepseek.version>2.0.1</spring-ai-starter-model-deepseek.version>
     </properties>
 
     <dependencyManagement>
@@ -399,11 +398,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure</artifactId>
                 <version>${springboot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-starter-model-deepseek</artifactId>
-                <version>${spring-ai-starter-model-deepseek.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
