@@ -18,8 +18,8 @@ public class OrderClient {
         try {
             restTemplate.getForEntity(url, Void.class);
         } catch (Exception e) {
-            log.error("create url {} ,error:", url);
-            throw new RuntimeException();
+            log.error("create url {} ,error:", url, e);
+            throw new RuntimeException("订单服务调用失败", e);
         }
     }
 }

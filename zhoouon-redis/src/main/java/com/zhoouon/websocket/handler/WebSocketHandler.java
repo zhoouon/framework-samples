@@ -9,24 +9,38 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /// WebSocketHandler.java
 @Component
 public class WebSocketHandler extends TextWebSocketHandler {
 
-    private static final Map<String, WebSocketSession> sessionMap = new ConcurrentHashMap<>();
+    private static final Map<String, Set<WebSocketSession>> SESSION_MAP = new ConcurrentHashMap<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         String userId = getUserId(session);
-        sessionMap.put(userId, session);
+        if (userId == null || userId.isBlank()) {
+            session.close(CloseStatus.BAD_DATA.withReason("缺少 userId 参数"));
+            return;
+        }
+        SESSION_MAP.computeIfAbsent(userId, key -> new CopyOnWriteArraySet<>()).add(session);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         String userId = getUserId(session);
-        sessionMap.remove(userId);
+        if (userId != null) {
+            Set<WebSocketSession> sessions = SESSION_MAP.get(userId);
+            if (sessions != null) {
+                sessions.remove(session);
+                if (sessions.isEmpty()) {
+                    SESSION_MAP.remove(userId, sessions);
+                }
+            }
+        }
     }
 
     @Override
@@ -35,9 +49,15 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     public void sendMessageToUser(String userId, String message) throws IOException {
-        WebSocketSession session = sessionMap.get(userId);
-        if (session != null && session.isOpen()) {
-            session.sendMessage(new TextMessage(message));
+        Set<WebSocketSession> sessions = SESSION_MAP.get(userId);
+        if (sessions == null) {
+            return;
+        }
+        TextMessage textMessage = new TextMessage(message);
+        for (WebSocketSession session : sessions) {
+            if (session.isOpen()) {
+                session.sendMessage(textMessage);
+            }
         }
     }
 

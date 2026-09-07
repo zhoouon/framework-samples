@@ -19,9 +19,8 @@ public class TestByteBuffer {
 
     public static void main(String[] args) {
 
-        try {
+        try (FileChannel channel = new FileInputStream(ResourceUtils.getFile("classpath:data.txt")).getChannel()) {
             // 通过使用FileInputStream 读取文件，并转换成FileChannel
-            FileChannel channel = new FileInputStream(ResourceUtils.getFile("classpath:data.txt")).getChannel();
             //创建buffer缓冲区
             ByteBuffer buffer = ByteBuffer.allocate(10);
             // 循环读取所有的内容

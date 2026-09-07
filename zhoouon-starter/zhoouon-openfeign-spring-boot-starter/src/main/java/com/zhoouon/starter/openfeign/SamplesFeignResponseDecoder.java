@@ -2,8 +2,9 @@ package com.zhoouon.starter.openfeign;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.zhoouon.starter.common.exception.ErrorCode;
 import com.zhoouon.starter.common.exception.RemoteException;
-import com.zhoouon.starter.common.result.Result;
+import com.zhoouon.starter.common.result.BaseResult;
 import com.zhoouon.starter.common.toolkit.JsonUtils;
 import feign.FeignException;
 import feign.Response;
@@ -23,16 +24,17 @@ public class SamplesFeignResponseDecoder implements Decoder {
 
     @Override
     public Object decode(Response response, Type type) throws IOException, FeignException {
-        // Result<?> result = objectMapper.readValue(response.body().asInputStream(), objectMapper.constructType(Result.class));
-        Result<?> result = JsonUtils.inputStream2Obj(response.body().asInputStream(), Result.class);
+        // 与 GlobalResponseBodyAdvice / BaseResult 保持一致的响应结构
+        BaseResult<?> result = JsonUtils.inputStream2Obj(response.body().asInputStream(), BaseResult.class);
 
-        if (result.getCode().equals(Result.SUCCESS_CODE)) {
-            Object data = result.getData();
+        if (result != null && Boolean.TRUE.equals(result.isSuccess())) {
             JavaType javaType = TypeFactory.defaultInstance().constructType(type);
-            return JsonUtils.convertValue(data, javaType);
+            return JsonUtils.convertValue(result.getData(), javaType);
         } else {
             // 若不成功，抛出业务异常，注意此处的异常会在 DecodeException 中被捕获
-            throw new RemoteException(result.getCode(), result.getMessage());
+            String code = result == null ? ErrorCode.REMOTE_ERROR.getCode() : result.getCode();
+            String message = result == null ? ErrorCode.REMOTE_ERROR.getMessage() : result.getMessage();
+            throw new RemoteException(code, message);
         }
     }
 }

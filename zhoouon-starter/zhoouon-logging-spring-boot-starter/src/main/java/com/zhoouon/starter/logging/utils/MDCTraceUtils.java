@@ -2,12 +2,14 @@ package com.zhoouon.starter.logging.utils;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.IdcardUtil;
 import org.slf4j.MDC;
 
-import java.sql.SQLOutput;
-
 public class MDCTraceUtils {
+    private static final Snowflake SNOWFLAKE = IdUtil.getSnowflake(1, 1);
+
+    private MDCTraceUtils() {
+    }
+
     /**
      * 追踪id的名称
      */
@@ -52,7 +54,7 @@ public class MDCTraceUtils {
      * 创建traceId
      */
     public static String createTraceId() {
-        return IdUtil.getSnowflake(1,1).nextIdStr();
+        return SNOWFLAKE.nextIdStr();
     }
 
 }

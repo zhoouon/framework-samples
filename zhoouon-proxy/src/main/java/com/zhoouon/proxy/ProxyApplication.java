@@ -14,12 +14,4 @@ public class ProxyApplication {
     public static void main(String[] args) {
         SpringApplication.run(ProxyApplication.class);
     }
-
-    public static class getName{
-
-    }
-
-    public String getUser(){
-        return "Hello World";
-    }
 }

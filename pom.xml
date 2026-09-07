@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>zhoouon-dependencies</module>
         <module>zhoouon-redis</module>
         <module>zhoouon-seata</module>
         <module>zhoouon-proxy</module>

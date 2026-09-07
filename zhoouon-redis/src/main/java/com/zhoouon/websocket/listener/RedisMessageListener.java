@@ -1,15 +1,16 @@
 package com.zhoouon.websocket.listener;
 
 import com.zhoouon.websocket.handler.WebSocketHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /// RedisMessageListener.java
+@Slf4j
 @Component
 public class RedisMessageListener implements MessageListener {
 
@@ -28,7 +29,7 @@ public class RedisMessageListener implements MessageListener {
         try {
             webSocketHandler.sendMessageToUser(userId, content);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("通过 WebSocket 推送消息失败, userId: {}", userId, e);
         }
     }
 }

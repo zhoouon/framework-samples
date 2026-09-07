@@ -43,11 +43,13 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
                                   ServerHttpResponse response) {
         if (body == null) {
+            response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             return JsonUtils.obj2String(BaseResult.buildSuccessData(""));
         }
         if (body instanceof String) {
             // 当响应体是String类型时，使用ObjectMapper转换，因为Spring默认使用StringHttpMessageConverter处理字符串，不会将字符串识别为JSON
             // return objectMapper.writeValueAsString(ResultFactory.success(body));
+            response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             return JsonUtils.obj2String(BaseResult.buildSuccessData(body));
         }
         if (body instanceof BaseResult<?>) {

@@ -28,15 +28,16 @@ public class TestlockInterruptibly {
         thread1.start();
         thread2.start();
         // 主线程沉睡1秒，避免现成thread1直接响应run()方法中的睡眠中断
-        TimeUnit.MICROSECONDS.sleep(100);
+        TimeUnit.MILLISECONDS.sleep(100);
         log.info("主线程开始沉睡第 1 秒");
-        TimeUnit.MICROSECONDS.sleep(1000);
+        TimeUnit.MILLISECONDS.sleep(1000);
         log.info("主线程在 {}", thread1.getName(), "上开始执行 interrupt()方法");
         thread1.interrupt();
     }
 
     public static class ReentrantLockThread implements Runnable {
-        private ReentrantLock lock1, lock2;
+        private final ReentrantLock lock1;
+        private final ReentrantLock lock2;
 
         public ReentrantLockThread(ReentrantLock lock1, ReentrantLock lock2) {
             this.lock1 = lock1;
@@ -49,11 +50,11 @@ public class TestlockInterruptibly {
                 // 对lock1进行加锁，获取lock1的可中断锁
                 lock1.lockInterruptibly();
                 log.info("加锁成功 1-2 : {}", Thread.currentThread().getName());
-                TimeUnit.MICROSECONDS.sleep(100);
+                TimeUnit.MILLISECONDS.sleep(100);
                 lock2.lockInterruptibly();
             } catch (InterruptedException e) {
-                log.error("发生异常: {}", Thread.currentThread().getName());
-                e.printStackTrace();
+                log.error("线程 {} 在等待锁时被中断", Thread.currentThread().getName(), e);
+                Thread.currentThread().interrupt();
             } finally {
                 if (lock1.isHeldByCurrentThread()) {
                     lock1.unlock();

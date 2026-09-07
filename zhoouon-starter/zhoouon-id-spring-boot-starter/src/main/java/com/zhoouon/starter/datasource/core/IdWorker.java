@@ -162,7 +162,9 @@ public class IdWorker {
                 continue;
             }
             byte[] mac = networkInterface.getHardwareAddress();
-            return ((mac[4] & 0B11) << 8) | (mac[5] & 0xFF);
+            if (mac != null && mac.length >= 6) {
+                return ((mac[4] & 0B11) << 8) | (mac[5] & 0xFF);
+            }
         }
         throw new RuntimeException("no available mac found");
     }

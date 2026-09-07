@@ -2,16 +2,14 @@ package com.ipman.sb2accountservice.config;
 
 import com.ipman.sb2accountservice.interceptor.SeataRestTemplateInterceptor;
 import jakarta.annotation.PostConstruct;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -22,8 +20,7 @@ import java.util.List;
  * @Description: (用一句话描述该文件做什么)
  * @date 2020/12/9 5:34 下午
  */
-@Configurable
-@NoArgsConstructor
+@Configuration
 public class SeataRestTemplateAutoConfiguration {
 
     @Autowired(required = false)
@@ -48,16 +45,11 @@ public class SeataRestTemplateAutoConfiguration {
     @PostConstruct
     public void init() {
         if (this.restTemplates != null) {
-            Iterator var1 = this.restTemplates.iterator();
-
-            while (var1.hasNext()) {
-                RestTemplate restTemplate = (RestTemplate) var1.next();
+            for (RestTemplate restTemplate : this.restTemplates) {
                 List<ClientHttpRequestInterceptor> interceptors = new ArrayList(restTemplate.getInterceptors());
                 interceptors.add(this.seataRestTemplateInterceptor);
                 restTemplate.setInterceptors(interceptors);
             }
         }
     }
-
-
 }

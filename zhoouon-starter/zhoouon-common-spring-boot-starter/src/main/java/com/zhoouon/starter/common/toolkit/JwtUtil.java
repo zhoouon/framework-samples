@@ -55,7 +55,7 @@ public class JwtUtil {
         Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
 
         if (expirationTime == null || expirationTime.before(new Date())) {
-            throw new BaseException(ErrorCode.JWT_PARSE_ERROR.getMessage(), "Token已过期");
+            throw new BaseException(ErrorCode.JWT_PARSE_ERROR.getCode(), "Token已过期");
         }
 
         return signedJWT.getJWTClaimsSet().getSubject();

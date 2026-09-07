@@ -19,7 +19,7 @@ public class volatileTest02 {
     }
 
     public void increaseAtomicInteger() {
-        incAtomicInteger.getAndDecrement();
+        incAtomicInteger.getAndIncrement();
     }
 
     /**

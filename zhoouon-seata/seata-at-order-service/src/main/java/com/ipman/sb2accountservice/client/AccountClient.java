@@ -21,7 +21,7 @@ public class AccountClient {
             restTemplate.getForEntity(url, Void.class);
         } catch (Exception e) {
             log.error("debit url {} ,error:", url, e);
-            throw new RuntimeException();
+            throw new RuntimeException("账户服务调用失败", e);
         }
     }
 

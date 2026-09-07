@@ -7,11 +7,9 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author zhoudong
@@ -24,7 +22,8 @@ public class GroupChatServerHandler extends SimpleChannelInboundHandler<String> 
      */
     private static ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault());
 
 
     /**
@@ -41,7 +40,8 @@ public class GroupChatServerHandler extends SimpleChannelInboundHandler<String> 
         该方法会将 channelGroup 中所有的channel 遍历，并发送 消息，
         我们不需要自己遍历
          */
-        channelGroup.writeAndFlush("[客户端]" + channel.remoteAddress() + " 加入聊天" + sdf.format(new java.util.Date()) + " \n");
+        channelGroup.writeAndFlush("[客户端]" + channel.remoteAddress() + " 加入聊天"
+                + DATE_TIME_FORMATTER.format(Instant.now()) + " \n");
         channelGroup.add(channel);
 
     }

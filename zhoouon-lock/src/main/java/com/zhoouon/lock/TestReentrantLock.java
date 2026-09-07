@@ -24,13 +24,13 @@ public class TestReentrantLock {
         thread1.start();
         thread2.start();
         thread1.join();
-        thread1.join();
+        thread2.join();
         log.info("num: {}", num);
     }
 
     private static class CountTask implements Runnable {
 
-        public ReentrantLock lock = new ReentrantLock();
+        private final ReentrantLock lock = new ReentrantLock();
 
         @Override
         public void run() {

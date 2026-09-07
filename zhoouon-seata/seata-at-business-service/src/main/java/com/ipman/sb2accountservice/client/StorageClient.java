@@ -21,7 +21,7 @@ public class StorageClient {
             restTemplate.getForEntity(url, Void.class);
         } catch (Exception e) {
             log.error("deduct url {} ,error:", url, e);
-            throw new RuntimeException();
+            throw new RuntimeException("库存服务调用失败", e);
         }
     }
 }

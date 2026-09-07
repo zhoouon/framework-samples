@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Description:
@@ -28,10 +28,15 @@ public class SamplesFeignErrorDecoder implements ErrorDecoder {
      */
     @Override
     public Exception decode(String methodKey, Response response) {
+        if (response.body() == null) {
+            return new RemoteException(ErrorCode.FEIGN_ERROR);
+        }
         try {
-            Reader reader = response.body().asReader(Charset.defaultCharset());
-            // Result<?> result = objectMapper.readValue(reader, objectMapper.constructType(Result.class));
+            Reader reader = response.body().asReader(StandardCharsets.UTF_8);
             BaseResult<?> result = JsonUtils.reader2Obj(reader, BaseResult.class);
+            if (result == null) {
+                return new RemoteException(ErrorCode.FEIGN_ERROR);
+            }
             return new RemoteException(result.getCode(), result.getMessage());
         } catch (IOException e) {
             log.error("Response转换异常", e);

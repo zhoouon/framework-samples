@@ -4,10 +4,10 @@ import com.zhoouon.starter.logging.utils.MDCTraceUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import io.micrometer.common.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.Objects;
 

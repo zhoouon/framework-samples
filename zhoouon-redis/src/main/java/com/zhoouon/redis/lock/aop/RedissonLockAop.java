@@ -11,9 +11,10 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 分布式锁的 aop
@@ -31,52 +32,50 @@ public class RedissonLockAop {
     }
 
     @Around("redissonLockPoint()")
-    @ResponseBody
-    public String checkLock(ProceedingJoinPoint pjp) throws Throwable {
-        //当前线程名
+    public Object checkLock(ProceedingJoinPoint pjp) throws Throwable {
+        // 当前线程名
         String threadName = Thread.currentThread().getName();
         log.info("线程{}------进入分布式锁aop------", threadName);
-        //获取参数列表
-        Object[] objs = pjp.getArgs();
-        //因为只有一个JSON参数，直接取第一个
-        JSONObject param = (JSONObject) objs[0];
-        //获取该注解的实例对象
+
+        // 获取该注解的实例对象
         RedissonLockAnnotation annotation = ((MethodSignature) pjp.getSignature()).
                 getMethod().getAnnotation(RedissonLockAnnotation.class);
-        //生成分布式锁key的键名，以逗号分隔
+        // 生成分布式锁key的键名，以逗号分隔
         String lockRedisKey = annotation.lockRedisKey();
-        StringBuffer keyBuffer = new StringBuffer();
         if (StringUtils.isEmpty(lockRedisKey)) {
-            log.info("线程{} lockRedisKey设置为空，不加锁", threadName);
-            pjp.proceed();
-            return "NULL LOCK";
-        } else {
-            //生成分布式锁key
-            String[] keyPartArray = lockRedisKey.split(",");
-            for (String keyPart : keyPartArray) {
-                keyBuffer.append(param.getString(keyPart));
-            }
-            String key = keyBuffer.toString();
-            log.info("线程{} 锁的key={}", threadName, key);
-            //获取锁  3000 等到获取锁的时间  leaseTime 获取锁后持有时间   时间单位 MILLISECONDS：毫秒
-            if (RedissonLockUtils.tryLock(key, 3000, 5000, TimeUnit.MILLISECONDS)) {
-                try {
-                    log.info("线程{} 获取锁成功", threadName);
-                    return (String) pjp.proceed();
-                } finally {
-                    if (RedissonLockUtils.isLocked(key)) {
-                        log.info("key={}对应的锁被持有,线程{}",key, threadName);
-                        if (RedissonLockUtils.isHeldByCurrentThread(key)) {
-                            log.info("当前线程 {} 保持锁定", threadName);
-                            RedissonLockUtils.unlock(key);
-                            log.info("线程{} 释放锁", threadName);
-                        }
-                    }
+            log.warn("线程{} lockRedisKey设置为空，不加锁直接执行业务", threadName);
+            return pjp.proceed();
+        }
+
+        JSONObject param = resolveFirstJsonParam(pjp.getArgs());
+        // 生成分布式锁key，多个字段之间用 ":" 分隔，避免 "ab"+"c" 与 "a"+"bc" 碰撞
+        String key = Stream.of(lockRedisKey.split(","))
+                .map(String::trim)
+                .filter(StringUtils::hasText)
+                .map(field -> param.getString(field))
+                .filter(java.util.Objects::nonNull)
+                .collect(Collectors.joining(":"));
+        log.info("线程{} 锁的key={}", threadName, key);
+        // 等待 3000ms，获取后持有 5000ms
+        if (RedissonLockUtils.tryLock(key, 3000, 5000, TimeUnit.MILLISECONDS)) {
+            try {
+                log.info("线程{} 获取锁成功", threadName);
+                return pjp.proceed();
+            } finally {
+                if (RedissonLockUtils.isLocked(key) && RedissonLockUtils.isHeldByCurrentThread(key)) {
+                    RedissonLockUtils.unlock(key);
+                    log.info("线程{} 释放锁", threadName);
                 }
-            } else {
-                log.info("线程{} 获取锁失败", threadName);
-                return " GET LOCK FAIL";
             }
         }
+        log.info("线程{} 获取锁失败", threadName);
+        return "GET LOCK FAIL";
+    }
+
+    private JSONObject resolveFirstJsonParam(Object[] args) {
+        if (args == null || args.length == 0 || !(args[0] instanceof JSONObject param)) {
+            throw new IllegalArgumentException("@RedissonLockAnnotation 仅支持第一个参数为 JSONObject 的方法");
+        }
+        return param;
     }
 }

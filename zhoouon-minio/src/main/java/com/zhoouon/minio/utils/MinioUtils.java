@@ -17,6 +17,7 @@ import io.minio.errors.InvalidResponseException;
 import io.minio.errors.ServerException;
 import io.minio.errors.XmlParserException;
 import io.minio.http.Method;
+import lombok.extern.slf4j.Slf4j;
 import lombok.SneakyThrows;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +46,7 @@ import java.util.concurrent.TimeUnit;
  * @Date: 2024-06-30 18:43
  * @Version: 1.0.0
  **/
+@Slf4j
 @Component
 public class MinioUtils {
 
@@ -189,36 +191,24 @@ public class MinioUtils {
     /**
      * @param file     文件
      * @param fileName 文件名称
+     * @return 上传后的对象名称
      * @Description 上传文件
      */
-    public void upload(MultipartFile file, String fileName) {
+    public String upload(MultipartFile file, String fileName) {
         // 使用putObject上传一个文件到存储桶中。
-        try {
-            InputStream inputStream = file.getInputStream();
+        try (InputStream inputStream = file.getInputStream()) {
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(configuration.getBucketName())
                     .object(fileName)
                     .stream(inputStream, file.getSize(), -1)
                     .contentType(file.getContentType())
                     .build());
-        } catch (ErrorResponseException e) {
-            e.printStackTrace();
-        } catch (InsufficientDataException e) {
-            e.printStackTrace();
-        } catch (InternalException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (InvalidResponseException e) {
-            e.printStackTrace();
+            return fileName;
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
+                 | InvalidResponseException | NoSuchAlgorithmException | ServerException | XmlParserException e) {
+            throw new IllegalStateException("MinIO 上传文件失败: " + fileName, e);
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (ServerException e) {
-            e.printStackTrace();
-        } catch (XmlParserException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("MinIO 读取上传文件失败: " + fileName, e);
         }
     }
 
@@ -265,44 +255,21 @@ public class MinioUtils {
      * @Description description: 下载文件
      */
     public ResponseEntity<byte[]> download(String fileName) {
-        ResponseEntity<byte[]> responseEntity = null;
-        InputStream in = null;
-        ByteArrayOutputStream out = null;
-        try {
-            in = minioClient.getObject(GetObjectArgs.builder().bucket(configuration.getBucketName()).object(fileName).build());
-            out = new ByteArrayOutputStream();
+        try (InputStream in = minioClient.getObject(
+                GetObjectArgs.builder().bucket(configuration.getBucketName()).object(fileName).build());
+             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             IOUtils.copy(in, out);
-            //封装返回值
             byte[] bytes = out.toByteArray();
             HttpHeaders headers = new HttpHeaders();
-            try {
-                headers.add("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            headers.add("Content-Disposition",
+                    "attachment;filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
             headers.setContentLength(bytes.length);
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setAccessControlExposeHeaders(Arrays.asList("*"));
-            responseEntity = new ResponseEntity<byte[]>(bytes, headers, HttpStatus.SUCCESS);
+            headers.setAccessControlExposeHeaders(Collections.singletonList("*"));
+            return new ResponseEntity<>(bytes, headers, HttpStatus.SUCCESS);
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            throw new IllegalStateException("MinIO 下载文件失败: " + fileName, e);
         }
-        return responseEntity;
     }
 
     /**
