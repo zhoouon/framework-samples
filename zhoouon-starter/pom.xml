@@ -10,10 +10,6 @@
     <description>公共组件模块</description>
     <packaging>pom</packaging>
 
-    <properties>
-        <java.version>17</java.version>
-    </properties>
-
     <modules>
         <module>zhoouon-logging-spring-boot-starter</module>
         <module>zhoouon-id-spring-boot-starter</module>
@@ -24,16 +20,4 @@
         <module>zhoouon-rocketmq-spring-boot-starter</module>
         <module>zhoouon-core-spring-boot-starter</module>
     </modules>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.zhoouon</groupId>
-                <artifactId>zhoouon-dependencies</artifactId>
-                <version>${revision}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 </project>

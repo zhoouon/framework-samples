@@ -12,10 +12,6 @@
     <artifactId>zhoouon-webflux</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <java.version>17</java.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.zhoouon</groupId>

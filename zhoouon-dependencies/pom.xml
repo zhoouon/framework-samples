@@ -4,77 +4,83 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
-    <artifactId>zhoouon-dependencies</artifactId>
     <groupId>com.zhoouon</groupId>
+    <artifactId>zhoouon-dependencies</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
-    <description>POM文件</description>
-
+    <name>zhoouon-dependencies</name>
+    <description>
+        zhoouon-samples 依赖版本管理中心（BOM）：
+        1) 统一导入并维护 Spring Boot / Spring Cloud / Spring Cloud Alibaba / Spring AI 等平台 BOM；
+        2) 统一维护 com.zhoouon 内部组件版本（项目版本号 revision）与三方依赖版本；
+        3) 所有子模块通过根 POM(zhoouon-samples) 导入本 BOM，模块 pom 中不写版本号，
+           各模块之间的依赖关系仅体现在依赖声明（dependency）中。
+    </description>
 
     <properties>
+        <!-- 项目版本号：整个工程唯一的版本来源 -->
         <revision>2024.1.0-SNAPSHOT</revision>
-        <maven-flatten.version>1.5.0</maven-flatten.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
-        <hutool.version>5.8.25</hutool.version>
-        <commons-collections4.version>4.4</commons-collections4.version>
-        <commons-beanutils.version>1.9.4</commons-beanutils.version>
-        <commons-io.version>2.7</commons-io.version>
-        <commons-lang3.version>3.12.0</commons-lang3.version>
-        <fastjson.version>1.2.83</fastjson.version>
+
+        <!-- 平台框架版本：SpringBoot/SpringCloud/SpringCloudAlibaba 三者版本关系参考 -->
+        <!-- https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E -->
         <springboot.version>3.2.4</springboot.version>
+        <spring.cloud.version>2023.0.1</spring.cloud.version>
+        <spring.cloud.alibaba.version>2022.0.0.2</spring.cloud.alibaba.version>
+        <spring-ai-bom.version>1.0.0</spring-ai-bom.version>
+
+        <!-- 三方依赖版本 -->
+        <hutool.version>5.8.25</hutool.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <guava.version>32.1.2-jre</guava.version>
+        <joda-time.version>2.10.13</joda-time.version>
         <sharding-sphere.version>5.2.1</sharding-sphere.version>
         <redisson-spring-boot-starter.version>3.23.4</redisson-spring-boot-starter.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
-        <mybatis-plus-dynamic.version>4.3.0</mybatis-plus-dynamic.version>
-        <mysql.version>8.0.33</mysql.version>
+        <mybatis-spring.version>3.0.3</mybatis-spring.version>
+        <druid.version>1.2.23</druid.version>
         <druid-spring.version>1.2.23</druid-spring.version>
-        <dynamic-datasource-spring.version>3.5.0</dynamic-datasource-spring.version>
         <springdoc.version>2.2.0</springdoc.version>
-        <knife4j.version>4.3.0</knife4j.version>
-        <guava.version>32.1.2-jre</guava.version>
-        <dom4j.version>1.6.1</dom4j.version>
         <minio.version>8.5.5</minio.version>
         <jjwt-jackson.version>0.11.2</jjwt-jackson.version>
         <cglib.version>3.3.0</cglib.version>
-        <aspectjrt.version>1.9.21</aspectjrt.version>
-        <aspectjweaver.version>1.9.21</aspectjweaver.version>
-        <seata-spring-boot.version>1.0.0</seata-spring-boot.version>
-        <jaxb-impl.version>2.3.1</jaxb-impl.version>
-        <jaxb-api.version>2.3.1</jaxb-api.version>
-        <jaxb-runtime.version>10.0.2</jaxb-runtime.version>
-        <slf4j-api.version>1.7.36</slf4j-api.version>
-        <logback-core.version>1.2.13</logback-core.version>
-        <logback-classic.version>1.2.13</logback-classic.version>
-        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
         <transmittable-thread-local.version>2.14.2</transmittable-thread-local.version>
         <logstash-logback-encoder.version>7.4</logstash-logback-encoder.version>
-        <joda-time.version>2.10.13</joda-time.version>
         <jmh.version>1.36</jmh.version>
         <orika.version>1.5.4</orika.version>
         <nimbus-jose-jwt.version>9.31</nimbus-jose-jwt.version>
         <jbcrypt.version>0.4</jbcrypt.version>
-        <snakeyaml.version>1.33</snakeyaml.version>
-        <junit.version>4.13.2</junit.version>
-        <druid.version>1.2.23</druid.version>
         <rocketmq.version>2.3.0</rocketmq.version>
-        <!-- bean 对象复制 -->
-        <mapstruct.version>1.4.2.Final</mapstruct.version>
         <netty.version>4.1.107.Final</netty.version>
-        <spring.cloud.openfeign.version>4.1.2</spring.cloud.openfeign.version>
-        <spring-boot-aop.version>3.2.7</spring-boot-aop.version>
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>https://maven.aliyun.com/nexus/content/repositories/central/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
+            <!-- ================================================================
+                第一部分：com.zhoouon 内部组件版本（项目版本号统一 ${revision}）
+                ================================================================ -->
             <dependency>
                 <groupId>com.zhoouon</groupId>
-                <artifactId>zhoouon-id-spring-boot-starter</artifactId>
+                <artifactId>zhoouon-logging-spring-boot-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -84,12 +90,12 @@
             </dependency>
             <dependency>
                 <groupId>com.zhoouon</groupId>
-                <artifactId>zhoouon-datasource-spring-boot-starter</artifactId>
+                <artifactId>zhoouon-id-spring-boot-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.zhoouon</groupId>
-                <artifactId>zhoouon-logging-spring-boot-starter</artifactId>
+                <artifactId>zhoouon-datasource-spring-boot-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -112,96 +118,19 @@
                 <artifactId>zhoouon-rocketmq-spring-boot-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
-            <dependency>
-                <groupId>com.zhoouon</groupId>
-                <artifactId>zhoouon-monitor-spring-boot-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${springboot.version}</version>
-                <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-openfeign</artifactId>
-                <version>${spring.cloud.openfeign.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-aop</artifactId>
-                <version>${springboot.version}</version>
-            </dependency>
-            <!--  开始属性绑定 配置文件有提示  -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-configuration-processor</artifactId>
-                <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.junit.vintage</groupId>
-                        <artifactId>junit-vintage-engine</artifactId>
-                    </exclusion>
-                </exclusions>
-                <version>${springboot.version}</version>
-                <scope>test</scope>
-            </dependency>
 
+            <!-- ================================================================
+                第二部分：显式管理的三方依赖版本（被依赖方 pom 无需再写版本号）
+                ================================================================ -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons-lang3.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-collections4</artifactId>
-                <version>${commons-collections4.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils</artifactId>
-                <version>${commons-beanutils.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
-                <version>${sharding-sphere.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.skywalking</groupId>
-                <artifactId>apm-toolkit-trace</artifactId>
-                <version>${apm-toolkit-trace.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-common</artifactId>
-                <version>${springdoc.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-                <version>${springdoc.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.redisson</groupId>
-                <artifactId>redisson-spring-boot-starter</artifactId>
-                <version>${redisson-spring-boot-starter.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -209,9 +138,19 @@
                 <version>${guava.version}</version>
             </dependency>
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql.version}</version>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
+                <version>${sharding-sphere.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson-spring-boot-starter.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -219,21 +158,30 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
             <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool.version}</version>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${mybatis-spring.version}</version>
             </dependency>
             <dependency>
-                <groupId>dom4j</groupId>
-                <artifactId>dom4j</artifactId>
-                <version>${dom4j.version}</version>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-common</artifactId>
+                <version>${springdoc.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
             </dependency>
-            <!--        jwt鉴权相应依赖-->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt-jackson</artifactId>
@@ -245,55 +193,6 @@
                 <version>${cglib.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjrt</artifactId>
-                <version>${aspectjrt.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjweaver</artifactId>
-                <version>${aspectjweaver.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.seata</groupId>
-                <artifactId>seata-spring-boot-starter</artifactId>
-                <version>${seata.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-impl</artifactId>
-                <version>${jaxb-impl.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish.jaxb</groupId>
-                <artifactId>jaxb-runtime</artifactId>
-                <version>${jaxb-runtime.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>${logback-core.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback-classic.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>${javax.servlet-api.version}</version>
-                <!-- optional=true 子项目不会包含这个依赖 -->
-                <optional>true</optional>
-            </dependency>
-
-            <!-- TransmittableThreadLocal实现父子线程之间的数据传递 -->
-            <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>transmittable-thread-local</artifactId>
                 <version>${transmittable-thread-local.version}</version>
@@ -304,29 +203,13 @@
                 <version>${logstash-logback-encoder.version}</version>
             </dependency>
             <dependency>
-                <groupId>joda-time</groupId>
-                <artifactId>joda-time</artifactId>
-                <version>${joda-time.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid-spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-                <version>${dynamic-datasource-spring.version}</version>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-core</artifactId>
+                <version>${jmh.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jmh</groupId>
                 <artifactId>jmh-generator-annprocess</artifactId>
-                <version>${jmh.version}</version>
-            </dependency>
-            <!--JMH测试 Start-->
-            <dependency>
-                <groupId>org.openjdk.jmh</groupId>
-                <artifactId>jmh-core</artifactId>
                 <version>${jmh.version}</version>
             </dependency>
             <dependency>
@@ -334,7 +217,6 @@
                 <artifactId>orika-core</artifactId>
                 <version>${orika.version}</version>
             </dependency>
-            <!--移走，不然太重了-->
             <dependency>
                 <groupId>com.nimbusds</groupId>
                 <artifactId>nimbus-jose-jwt</artifactId>
@@ -346,40 +228,9 @@
                 <version>${jbcrypt.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.yaml</groupId>
-                <artifactId>snakeyaml</artifactId>
-                <version>${snakeyaml.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>${jaxb-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid</artifactId>
-                <version>${druid.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
-                <version>${mybatis-plus-dynamic.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.rocketmq</groupId>
                 <artifactId>rocketmq-spring-boot-starter</artifactId>
                 <version>${rocketmq.version}</version>
-            </dependency>
-            <!-- bean 对象复制 -->
-            <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct</artifactId>
-                <version>${mapstruct.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>
@@ -387,17 +238,42 @@
                 <version>${netty.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet-api.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            </dependency>
+
+            <!-- ================================================================
+                第三部分：平台 BOM（Spring Boot / Spring Cloud / Spring Cloud Alibaba / Spring AI）
+                置于最后，用于补齐未被显式管理的平台相关依赖版本
+                ================================================================ -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-autoconfigure</artifactId>
+                <artifactId>spring-boot-dependencies</artifactId>
                 <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

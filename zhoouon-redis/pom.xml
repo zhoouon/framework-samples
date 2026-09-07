@@ -6,7 +6,6 @@
         <artifactId>zhoouon-samples</artifactId>
         <version>${revision}</version>
     </parent>
-    <groupId>org.redis</groupId>
     <artifactId>zhoouon-redis</artifactId>
     <description>Redis Lock</description>
     <packaging>jar</packaging>

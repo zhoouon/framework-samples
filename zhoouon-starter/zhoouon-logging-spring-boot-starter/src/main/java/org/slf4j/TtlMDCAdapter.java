@@ -3,7 +3,9 @@ package org.slf4j;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import org.slf4j.spi.MDCAdapter;
 
+import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -17,6 +19,7 @@ import java.util.Set;
 public class TtlMDCAdapter implements MDCAdapter {
 
     private final ThreadLocal<Map<String, String>> copyOnInheritThreadLocal = new TransmittableThreadLocal<>();
+    private final ThreadLocal<Map<String, Deque<String>>> dequeMapThreadLocal = new TransmittableThreadLocal<>();
     private static final int WRITE_OPERATION = 1;
     private static final int MAP_COPY_OPERATION = 2;
 
@@ -180,6 +183,65 @@ public class TtlMDCAdapter implements MDCAdapter {
 
         // the newMap replaces the old one for serialisation's sake
         copyOnInheritThreadLocal.set(newMap);
+    }
+
+    /**
+     * 向指定 key 的栈中压入一个值（SLF4J 2.x 提供的 MDC 栈式能力）。
+     */
+    @Override
+    public void pushByKey(String key, String value) {
+        if (key == null) {
+            throw new IllegalArgumentException("key cannot be null");
+        }
+        Map<String, Deque<String>> dequeMap = dequeMapThreadLocal.get();
+        if (dequeMap == null) {
+            dequeMap = Collections.synchronizedMap(new HashMap<>());
+            dequeMapThreadLocal.set(dequeMap);
+        }
+        dequeMap.computeIfAbsent(key, k -> new ArrayDeque<>()).push(value);
+    }
+
+    /**
+     * 从指定 key 的栈中弹出一个值，栈为空时返回 null。
+     */
+    @Override
+    public String popByKey(String key) {
+        if (key == null) {
+            throw new IllegalArgumentException("key cannot be null");
+        }
+        Deque<String> deque = getDequeByKey(key);
+        return (deque == null || deque.isEmpty()) ? null : deque.pop();
+    }
+
+    /**
+     * 返回指定 key 的栈的副本。
+     */
+    @Override
+    public Deque<String> getCopyOfDequeByKey(String key) {
+        if (key == null) {
+            throw new IllegalArgumentException("key cannot be null");
+        }
+        Deque<String> deque = getDequeByKey(key);
+        return deque == null ? new ArrayDeque<>() : new ArrayDeque<>(deque);
+    }
+
+    /**
+     * 清空指定 key 的栈。
+     */
+    @Override
+    public void clearDequeByKey(String key) {
+        if (key == null) {
+            throw new IllegalArgumentException("key cannot be null");
+        }
+        Map<String, Deque<String>> dequeMap = dequeMapThreadLocal.get();
+        if (dequeMap != null) {
+            dequeMap.remove(key);
+        }
+    }
+
+    private Deque<String> getDequeByKey(String key) {
+        Map<String, Deque<String>> dequeMap = dequeMapThreadLocal.get();
+        return dequeMap == null ? null : dequeMap.get(key);
     }
 
 }
