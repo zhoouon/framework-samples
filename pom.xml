@@ -21,6 +21,7 @@
         <module>zhoouon-starter</module>
         <module>zhoouon-netty</module>
         <module>zhoouon-webflux</module>
+        <module>zhoouon-ai</module>
     </modules>
 
     <properties>
@@ -35,6 +36,7 @@
         <spring.cloud.alibaba.version>2022.0.0.2</spring.cloud.alibaba.version>
         <maven-flatten.version>1.5.0</maven-flatten.version>
         <spotless-maven-plugin.version>2.22.1</spotless-maven-plugin.version>
+        <spring-ai-bom.version>2.0.1</spring-ai-bom.version>
     </properties>
 
     <repositories>
@@ -81,7 +83,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -94,82 +102,11 @@
 
     <build>
         <plugins>
-            <!--此插件用于格式化代码，mvn spotless:check mvn spotless:apply -->
-            <!--<plugin>
-                <groupId>com.diffplug.spotless</groupId>
-                <artifactId>spotless-maven-plugin</artifactId>
-                <version>${spotless-maven-plugin.version}</version>
-                <configuration>
-                    <java>
-                        <eclipse>
-                            &lt;!&ndash;<file>${maven.multiModuleProjectDirectory}/dev-support/dailymart_spotless_formatter.xml</file>&ndash;&gt;
-                            <file>dev-support/dailymart_spotless_formatter.xml</file>
-                        </eclipse>
-                        <licenseHeader>
-                            &lt;!&ndash;<file>${maven.multiModuleProjectDirectory}/dev-support/license-header</file>&ndash;&gt;
-                            <file>dev-support/license-header</file>
-                        </licenseHeader>
-                    </java>
-                </configuration>
-
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>apply</goal>
-                        </goals>
-                        <phase>compile</phase>
-                    </execution>
-                </executions>
-            </plugin>-->
-
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
-                <!--<configuration>
-                    <release>17</release>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </path>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>1.4.2.Final</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>-->
             </plugin>
-
-
-<!--            <plugin>-->
-<!--                <groupId>org.codehaus.mojo</groupId>-->
-<!--                <artifactId>flatten-maven-plugin</artifactId>-->
-<!--                <version>${maven-flatten.version}</version>-->
-<!--                <configuration>-->
-<!--                    <updatePomFile>true</updatePomFile>-->
-<!--                    <flattenMode>resolveCiFriendliesOnly</flattenMode>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>flatten</id>-->
-<!--                        <goals>-->
-<!--                            <goal>flatten</goal>-->
-<!--                        </goals>-->
-<!--                        <phase>process-resources</phase>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>flatten.clean</id>-->
-<!--                        <goals>-->
-<!--                            <goal>clean</goal>-->
-<!--                        </goals>-->
-<!--                        <phase>clean</phase>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-
             <!--打包生成源码-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
