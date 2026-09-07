@@ -3,11 +3,14 @@ package com.zhoouon.ai;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.deepseek.DeepSeekAssistantMessage;
 import org.springframework.ai.deepseek.DeepSeekChatModel;
 import org.springframework.ai.deepseek.DeepSeekChatOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Flux;
+
+import java.util.Objects;
 
 /**
  * @Author: zhoudong
@@ -51,5 +54,36 @@ public class TestDeepseek {
         Prompt prompt = new Prompt("请写一句诗描述清晨", opetion);
         ChatResponse response = chatModel.call(prompt);
         System.out.println(response.getResult().getOutput().getText());
+    }
+
+    /**
+     * 同步阻塞 深度思考
+     * @param chatModel
+     */
+    @Test
+    public void testDeepseek4(@Autowired DeepSeekChatModel chatModel) {
+        Prompt prompt = new Prompt("你好 你是谁");
+        ChatResponse chatResponse = chatModel.call(prompt);
+        DeepSeekAssistantMessage assistantMessage = (DeepSeekAssistantMessage)chatResponse.getResult().getOutput();
+        System.out.println(assistantMessage.getReasoningContent());
+        System.out.println("-----------------------------------------------------");
+        System.out.println(assistantMessage.getText());
+    }
+
+    /**
+     * 通过流的方式将深度思考的结果输出
+     * @param chatModel
+     */
+    @Test
+    public void testDeepseek5(@Autowired DeepSeekChatModel chatModel) {
+        Prompt prompt = new Prompt("你好 你是谁");
+        Flux<ChatResponse> stream = chatModel.stream(prompt);
+        stream.toIterable().forEach(chatResponse -> {
+            DeepSeekAssistantMessage deepSeekAssistantMessage = (DeepSeekAssistantMessage) chatResponse.getResult().getOutput();
+            if (Objects.isNull(deepSeekAssistantMessage)) {
+                return;
+            }
+            System.out.print(deepSeekAssistantMessage.getText());
+        });
     }
 }
