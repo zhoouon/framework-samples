@@ -1,71 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <springProperty scope="context" name="currentEnv" source="spring.profiles.active"/>
-    <!-- 彩色日志依赖的渲染类 -->
-    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
-    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
-    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
-    <!-- 彩色日志格式 -->
-    <!-- %d{yyyy-MM-dd HH:mm:ss.SSS}——日志输出时间; %thread——输出日志的进程名字，这在Web应用以及异步任务处理中很有用; %-5level——日志级别，并且使用5个字符靠左对齐; %logger{36}——日志输出者的名字; %M——方法名; %msg——日志消息; %n——平台的换行符; -->
-    <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr([%X{traceId}]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    <!-- 日志目录与文件名使用的应用标识 -->
+    <property name="APP_NAME" value="concurrent"/>
 
-    <!-- 配置日志文件保存位置 -->
-    <property name="PROJECT" value="concurrent"/>
-    <property name="ROOT" value="logs/concurrent"/>
-    <property name="FILESIZE" value="50MB"/>
-    <property name="style" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t,%X{traceId}] %-40.40logger{39}:%L-- %msg%n"/>
-    <appender  name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder charset="utf-8">
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-        </encoder>
-    </appender>
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--日志文档输出格式-->
-        <encoder charset="utf-8">
-            <pattern>${style}</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 日志归档 -->
-            <!-- 归档的日志文件的路径，例如今天是2018-08-23日志，当前写的日志文件路径为file节点指定， 可以将此文件与file指定文件路径设置为不同路径，从而将当前日志文件或归档日志文件置不同的目录。 而2018-08-23的日志文件在由fileNamePattern指定。%d{yyyy-MM-dd}指定日期格式，%i指定索引 -->
-            <fileNamePattern>${ROOT}-${currentEnv}/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <!--日志文档保留天数,以防止日志填满整个磁盘空间-->
-            <maxHistory>20</maxHistory>
-            <!--用来指定日志文件的上限大小，例如设置为1GB的话，那么到了这个值，就会删除旧的日志。-->
-            <totalSizeCap>1GB</totalSizeCap>
-            <!-- 配置日志文件不能超过100M，若超过100M，日志文件会以索引0开始，命名日志文件 例如error.20180823.0.txt -->
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${FILESIZE}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-    </appender>
-
-    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
-        <includeCallerData>true</includeCallerData>
-        <appender-ref ref="FILE"/>
-    </appender>
-    <!-- 日志异步到数据库  -->
-    <!-- <appender name="DBAPPENDER" class="ch.qos.logback.classic.db.DBAppender">
-        <connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
-            <dataSource class="com.zaxxer.hikari.HikariDataSource">
-                <driverClassName>com.mysql.jdbc.Driver</driverClassName>
-                <jdbcUrl>jdbc:mysql://localhost:3306/albedo-new?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false</jdbcUrl>
-                <username>root</username>
-                <password>123456</password>
-                <poolName>HikariPool-logback</poolName>
-            </dataSource>
-        </connectionSource>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>info</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender> -->
+    <!-- 公共日志配置（控制台 / 文件滚动归档 / 异步输出），来自 zhoouon-logging-spring-boot-starter -->
+    <include resource="logback/logback-default.xml"/>
 
     <root level="info">
-        <appender-ref ref="STDOUT" />
-        <appender-ref ref="ASYNC_FILE" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC_FILE"/>
     </root>
-
-    <!-- 可以启动服务的时候指定 profile （如不指定使用默认），如指定prod 的方式为：
-    java -jar xxx.jar –spring.profiles.active=prod-->
 </configuration>

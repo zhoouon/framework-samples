@@ -8,15 +8,16 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 127.0.0.1:8848
-        namespace: 59be4370-3745-47e6-b406-3d196ad5b2b6
-        username: nacos
-        password: nacos
+        # 可通过环境变量覆盖：NACOS_ADDR / NACOS_NAMESPACE / NACOS_USERNAME / NACOS_PASSWORD
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:59be4370-3745-47e6-b406-3d196ad5b2b6}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:nacos}
       discovery:
-        server-addr: 127.0.0.1:8848
-        namespace: 59be4370-3745-47e6-b406-3d196ad5b2b6
-        username: nacos
-        password: nacos
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:59be4370-3745-47e6-b406-3d196ad5b2b6}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:nacos}
   # 输出彩色日志
   output:
     ansi:
@@ -32,9 +33,10 @@ spring:
       names: ds0
       ds0:
         type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://127.0.0.1:3306/sharding-sphere?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
-        username: root
-        password: 12345678
+        # 可通过环境变量覆盖：MYSQL_HOST / MYSQL_PORT / MYSQL_DATABASE / MYSQL_USERNAME / MYSQL_PASSWORD
+        url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:sharding-sphere}?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+        username: ${MYSQL_USERNAME:root}
+        password: ${MYSQL_PASSWORD:12345678}
         driver-class-name: com.mysql.cj.jdbc.Driver
         # ---- Druid 连接池参数（最佳实践）----
         initialSize: 5
@@ -78,22 +80,22 @@ seata:
     #配置seata的注册中心，告诉 seata client 怎么去访问seata service
     type: nacos
     nacos:
-      server-addr: 127.0.0.1:8848
+      server-addr: ${NACOS_ADDR:127.0.0.1:8848}
       #seata service 的 application: name
       application: seata-server
-      username: nacos
-      password: nacos
-      namespace: 59be4370-3745-47e6-b406-3d196ad5b2b6
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWORD:nacos}
+      namespace: ${NACOS_NAMESPACE:59be4370-3745-47e6-b406-3d196ad5b2b6}
       group: SEATA_GROUP
   config:
     #配置seata的配置中心，可以读取关于seata client 的一些配置
     type: nacos
     nacos:
-      server-addr: 127.0.0.1:8848
-      username: nacos
-      password: nacos
+      server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWORD:nacos}
       group: SEATA_GROUP
-      namespace: 59be4370-3745-47e6-b406-3d196ad5b2b6
+      namespace: ${NACOS_NAMESPACE:59be4370-3745-47e6-b406-3d196ad5b2b6}
       data-id: seataServer.properties
 
   # mybatis-plus 相关配置信息
