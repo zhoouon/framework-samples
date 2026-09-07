@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.zhoouon</groupId>
         <artifactId>zhoouon-samples</artifactId>
-        <version>2024.1.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>zhoouon-ai</artifactId>
