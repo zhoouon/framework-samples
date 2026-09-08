@@ -26,7 +26,7 @@
     </modules>
 
     <properties>
-        <revision>2024.1.0-SNAPSHOT</revision>
+        <revision>2026.1.0-SNAPSHOT</revision>
         <!--SpringCloud,SpringCloud alibaba,SpringBoot 三者之间的版本关系参考 https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E-->
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
