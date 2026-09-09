@@ -57,6 +57,7 @@
         <netty.version>4.1.107.Final</netty.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
         <mapstruct.version>1.6.3</mapstruct.version>
+        <ollama.version>1.0.0</ollama.version>
     </properties>
 
     <repositories>
@@ -274,6 +275,11 @@
                 <version>${spring-ai-bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-starter-model-ollama</artifactId>
+                <version>${ollama.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
