@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 日志目录与文件名使用的应用标识 -->
+    <property name="APP_NAME" value="zhoouon-redis"/>
+
+    <!-- 公共日志配置（控制台 / 文件滚动归档 / 异步输出），来自 zhoouon-logging-spring-boot-starter -->
+    <include resource="logback/logback-default.xml"/>
+
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC_FILE"/>
+    </root>
+</configuration>

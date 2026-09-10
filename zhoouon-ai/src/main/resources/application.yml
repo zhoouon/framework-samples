@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: zhoouon-ai
+  ai:
+    deepseek:
+      api-key:
+      chat:
+        model: deepseek-chat
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: qwen3.5:4b

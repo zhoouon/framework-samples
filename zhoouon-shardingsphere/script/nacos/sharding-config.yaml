@@ -1,0 +1,58 @@
+spring:
+  shardingsphere:
+    mode:
+      repository:
+        type: JDBC
+      type: Standalone
+    props:
+      sql-show: true
+    datasource:
+      names: ds0
+      ds0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/sharding-sphere?characterEncoding=utf8&useAffectedRows=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        username: root
+        password: 123456
+        hikari:
+          # 连接池中允许的最小连接数。缺省值：10
+          minimum-idle: 10
+          # 连接池中允许的最大连接数。缺省值：10
+          maximum-pool-size: 20
+          # 自动提交 默认值为 true
+          auto-commit: true
+          # 连接允许在池中闲置的最长时间，一个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分钟
+          idle-timeout: 600000
+          # 连接池名字，用于日志和监控
+          pool-name: mysql-pool
+          # 一 个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒
+          max-lifetime: 600000
+          # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒
+          connection-timeout: 30000
+          #连接测试查询语句，用于验证连接是否有效
+          connection-test-query: select 1
+          #验证连接有效性的超时时间，单位为毫秒,默认值 5000 毫秒（5 秒）
+          validation-timeout: 30000
+          #设置事务隔离级别,不配置此项默认遵从数据库的配置，读已提交TRANSACTION_READ_COMMITTED，此外还有读未提交TRANSACTION_READ_UNCOMMITTED，可重复度TRANSACTION_REPEATABLE_READ，串行化TRANSACTION_SERIALIZABLE
+          transaction-isolation: TRANSACTION_READ_COMMITTED
+          #是否将连接设置为只读模式，默认false
+          readOnly: false
+    rules:
+      sharding:
+        tables:
+          #表名
+          router_config:
+            #数据节点，所有表名
+            actual-data-nodes: ds0.router_config_$->{0..9},ds0.router_config_$->{10..49}
+            #分表策略
+            table-strategy:
+              #分表类型，单列作为分表键
+              standard:
+                sharding-column: id #分表列
+                sharding-algorithm-name: id-suffix-mode-50 #分表算法名称，与下面对应
+        sharding-algorithms: # 分片算法配置
+          id-suffix-mode-50:
+            type: INLINE # 基于行表达式的分片算法
+            props:
+              #分片表达式，groovy 脚本
+              algorithm-expression: router_config_$->{String.valueOf(Long.parseLong(String.valueOf(id).substring(String.valueOf(id).size() - 2)) % 50 ).padLeft(2,'0')}

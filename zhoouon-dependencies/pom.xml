@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.zhoouon</groupId>
+    <artifactId>zhoouon-dependencies</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <name>zhoouon-dependencies</name>
+    <description>
+        zhoouon-samples 依赖版本管理中心（BOM）：
+        1) 统一导入并维护 Spring Boot / Spring Cloud / Spring Cloud Alibaba / Spring AI 等平台 BOM；
+        2) 统一维护 com.zhoouon 内部组件版本（项目版本号 revision）与三方依赖版本；
+        3) 所有子模块通过根 POM(zhoouon-samples) 导入本 BOM，模块 pom 中不写版本号，
+           各模块之间的依赖关系仅体现在依赖声明（dependency）中。
+    </description>
+
+    <properties>
+        <!-- 项目版本号：整个工程唯一的版本来源 -->
+        <revision>2026.1.0-SNAPSHOT</revision>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
+
+        <!-- 平台框架版本：SpringBoot/SpringCloud/SpringCloudAlibaba 三者版本关系参考 -->
+        <!-- https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E -->
+        <springboot.version>3.2.4</springboot.version>
+        <spring.cloud.version>2023.0.1</spring.cloud.version>
+        <spring.cloud.alibaba.version>2022.0.0.2</spring.cloud.alibaba.version>
+        <spring-ai-bom.version>1.0.0</spring-ai-bom.version>
+
+        <!-- 三方依赖版本 -->
+        <hutool.version>5.8.25</hutool.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <guava.version>32.1.2-jre</guava.version>
+        <joda-time.version>2.10.13</joda-time.version>
+        <sharding-sphere.version>5.2.1</sharding-sphere.version>
+        <redisson-spring-boot-starter.version>3.23.4</redisson-spring-boot-starter.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
+        <mybatis-spring.version>3.0.3</mybatis-spring.version>
+        <druid.version>1.2.23</druid.version>
+        <druid-spring.version>1.2.23</druid-spring.version>
+        <springdoc.version>2.2.0</springdoc.version>
+        <minio.version>8.5.5</minio.version>
+        <jjwt-jackson.version>0.11.2</jjwt-jackson.version>
+        <cglib.version>3.3.0</cglib.version>
+        <transmittable-thread-local.version>2.14.2</transmittable-thread-local.version>
+        <jmh.version>1.36</jmh.version>
+        <orika.version>1.5.4</orika.version>
+        <nimbus-jose-jwt.version>9.31</nimbus-jose-jwt.version>
+        <jbcrypt.version>0.4</jbcrypt.version>
+        <rocketmq.version>2.3.0</rocketmq.version>
+        <netty.version>4.1.107.Final</netty.version>
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <ollama.version>1.0.0</ollama.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>https://maven.aliyun.com/nexus/content/repositories/central/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- ================================================================
+                第一部分：com.zhoouon 内部组件版本（项目版本号统一 ${revision}）
+                ================================================================ -->
+            <dependency>
+                <groupId>com.zhoouon</groupId>
+                <artifactId>zhoouon-logging-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zhoouon</groupId>
+                <artifactId>zhoouon-common-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zhoouon</groupId>
+                <artifactId>zhoouon-id-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zhoouon</groupId>
+                <artifactId>zhoouon-datasource-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zhoouon</groupId>
+                <artifactId>zhoouon-web-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zhoouon</groupId>
+                <artifactId>zhoouon-openfeign-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zhoouon</groupId>
+                <artifactId>zhoouon-core-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zhoouon</groupId>
+                <artifactId>zhoouon-rocketmq-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- ================================================================
+                第二部分：显式管理的三方依赖版本（被依赖方 pom 无需再写版本号）
+                ================================================================ -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
+                <version>${sharding-sphere.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${mybatis-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-common</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt-jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib</artifactId>
+                <version>${cglib.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable-thread-local.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-core</artifactId>
+                <version>${jmh.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-generator-annprocess</artifactId>
+                <version>${jmh.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ma.glasnost.orika</groupId>
+                <artifactId>orika-core</artifactId>
+                <version>${orika.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>nimbus-jose-jwt</artifactId>
+                <version>${nimbus-jose-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mindrot</groupId>
+                <artifactId>jbcrypt</artifactId>
+                <version>${jbcrypt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+
+            <!-- ================================================================
+                第三部分：平台 BOM（Spring Boot / Spring Cloud / Spring Cloud Alibaba / Spring AI）
+                置于最后，用于补齐未被显式管理的平台相关依赖版本
+                ================================================================ -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-starter-model-ollama</artifactId>
+                <version>${ollama.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

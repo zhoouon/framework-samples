@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.zhoouon</groupId>
+        <artifactId>zhoouon-samples</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <artifactId>zhoouon-seata</artifactId>
+    <packaging>pom</packaging>
+    <name>zhoouon-seata</name>
+    <description>Seata练习</description>
+
+
+    <modules>
+        <module>seata-at-account-service</module>
+        <module>seata-at-order-service</module>
+        <module>seata-at-storage-service</module>
+        <module>seata-at-business-service</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.seata</groupId>
+            <artifactId>seata-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+</project>
