@@ -1,0 +1,45 @@
+server:
+  port: 7091
+
+spring:
+  application:
+    name: seata-server
+
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    path: ${log.home:${user.home}/logs/seata}
+
+console:
+  user:
+    username: seata
+    password: seata
+seata:
+  # 配置中心
+  config:
+    type: nacos # 指定使用 nacos 作为配置中心
+    nacos:
+      server-addr: 127.0.0.1:8848
+      namespace:  59be4370-3745-47e6-b406-3d196ad5b2b6 # 命名空间，如果不写默认使用 Nacos 的 public 命名空间
+      group: SEATA_GROUP # 我直接用 Nacos 的默认，你也可以自己起一个分组叫做 SEATA_GROUP
+      username: nacos # 如果你的 nacos 没配置账号密码则不需要写这两项
+      password: nacos
+      data-id: seataServer.properties # 也就是配置中心 Nacos 上的文件名称
+  # 注册中心
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server # seata tc 服务注册到 nacos的服务名称，可以自定义，需与上面的 spring.application.name属性一致
+      server-addr: 127.0.0.1:8848
+      group: SEATA_GROUP
+      namespace: 59be4370-3745-47e6-b406-3d196ad5b2b6
+      # cluster: 
+      username: nacos
+      password: nacos
+  #  server:
+  #    service-port: 8091 #If not configured, the default is '${server.port} + 1000'
+  security:
+    secretKey: SeataSecretKey0c382ef121d778043159209298fd40bf3850a017 # 这项可要可不要，我这里不要了
+    tokenValidityInMilliseconds: 1800000
+    ignore:
+      urls: /,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.jpeg,/**/*.ico,/api/v1/auth/login,/metadata/v1/**
