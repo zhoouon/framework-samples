@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  zhoouon-logging-spring-boot-starter 提供的公共 logback 配置片段。
+  该文件不放在 classpath 根目录（不会被 Spring Boot 自动加载），
+  由各应用模块的 logback-spring.xml 通过 include 显式引入：
+
+    <configuration>
+        <property name="APP_NAME" value="your-app"/>
+        <include resource="logback/logback-default.xml"/>
+        <root level="info">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="ASYNC_FILE"/>
+        </root>
+    </configuration>
+
+  注意：配置面向 Spring Boot 3.2 / logback 1.4.x，
+  使用 SizeAndTimeBasedRollingPolicy 完成按天 + 按大小滚动归档。
+-->
+<included>
+    <!-- 日志根目录：可通过系统属性或 include 前定义 LOG_HOME 覆盖 -->
+    <property name="LOG_HOME" value="${LOG_HOME:-logs}"/>
+    <!-- 应用名：默认读取各模块 logback-spring.xml 中定义的 APP_NAME -->
+    <property name="APP_NAME" value="${APP_NAME:-application}"/>
+    <!-- 日志输出目录 -->
+    <property name="LOG_PATH" value="${LOG_PATH:-${LOG_HOME}/${APP_NAME}}"/>
+    <!-- 单个日志文件大小上限 -->
+    <property name="MAX_FILE_SIZE" value="${MAX_FILE_SIZE:-50MB}"/>
+    <!-- 归档日志保留天数 -->
+    <property name="MAX_HISTORY" value="${MAX_HISTORY:-20}"/>
+    <!-- 归档日志总体积上限 -->
+    <property name="TOTAL_SIZE_CAP" value="${TOTAL_SIZE_CAP:-1GB}"/>
+
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+
+    <!--
+      控制台日志格式：时间 / 级别 / PID / 线程 / traceId(链路追踪) / logger / 消息
+      %d{yyyy-MM-dd HH:mm:ss.SSS} 日志时间; %thread 线程名; %-5level 级别(5字符左对齐);
+      %logger{39} 日志输出者; %msg 消息; %n 换行
+    -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr([%X{traceId}]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+    <!-- 文件日志格式：默认关闭颜色，保留 caller 行号，便于排查问题 -->
+    <property name="FILE_LOG_PATTERN"
+              value="${FILE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread,%X{traceId}] %-40.40logger{39}:%L-- %msg%n}"/>
+
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="UTF-8">
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!--
+      文件滚动策略：SizeAndTimeBasedRollingPolicy（logback 1.3+ 标准写法）
+      - 当前日志：${LOG_PATH}/${APP_NAME}.log
+      - 归档日志：${LOG_PATH}/archives/${APP_NAME}.yyyy-MM-dd.<索引>.log
+      - 单文件超过 MAX_FILE_SIZE 或跨天后触发滚动
+    -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${APP_NAME}.log</file>
+        <encoder charset="UTF-8">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/archives/${APP_NAME}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 文件异步输出，避免磁盘 IO 阻塞业务线程 -->
+    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <includeCallerData>true</includeCallerData>
+        <neverBlock>true</neverBlock>
+        <appender-ref ref="FILE"/>
+    </appender>
+</included>

@@ -1,0 +1,2 @@
+org.apache.rocketmq.spring.autoconfigure.RocketMQAutoConfiguration
+com.zhoouon.springboot.starter.rocketmq.configuration.RocketMQEnhanceAutoConfiguration

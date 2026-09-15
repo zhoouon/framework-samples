@@ -1,0 +1,13 @@
+server:
+  port: 8080
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  #minio配置
+  minio:
+    access-key: dAMaxkWaXUD1CV1JHbqw
+    secret-key: AXt3SD0JFkDENFbMeJKOOQb5wj8KvabZWu33Rs84
+    url: http://192.168.18.14:9090  #访问地址
+    bucket-name: zhoouon

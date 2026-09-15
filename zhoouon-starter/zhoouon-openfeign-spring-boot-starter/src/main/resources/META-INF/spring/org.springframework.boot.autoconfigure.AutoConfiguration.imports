@@ -1,0 +1,2 @@
+com.zhoouon.starter.openfeign.configuration.SamplesFeignAutoConfiguration
+com.zhoouon.starter.openfeign.configuration.FeignRequestConfiguration

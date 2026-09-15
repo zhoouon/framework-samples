@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhoouon.sharding.mapper.RouterConfigMapper">
+  <resultMap id="BaseResultMap" type="com.zhoouon.sharding.entity.RouterConfig">
+    <!--@mbg.generated-->
+    <!--@Table router_config-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="repay_no" jdbcType="VARCHAR" property="repayNo" />
+    <result column="wifi_name" jdbcType="VARCHAR" property="wifiName" />
+    <result column="wifi_password" jdbcType="VARCHAR" property="wifiPassword" />
+    <result column="wifi_switch" jdbcType="INTEGER" property="wifiSwitch" />
+    <result column="encrypt_type" jdbcType="INTEGER" property="encryptType" />
+    <result column="admin_password" jdbcType="VARCHAR" property="adminPassword" />
+    <result column="hide_switch" jdbcType="INTEGER" property="hideSwitch" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, repay_no, wifi_name, wifi_password, wifi_switch, encrypt_type, admin_password,
+    hide_switch
+  </sql>
+</mapper>

@@ -1,0 +1,3 @@
+com.zhoouon.starter.web.configuration.WebAutoConfiguration
+com.zhoouon.starter.web.configuration.WebMvcConfigurerAdaptor
+com.zhoouon.starter.web.configuration.ErrorControllerAutoConfiguration

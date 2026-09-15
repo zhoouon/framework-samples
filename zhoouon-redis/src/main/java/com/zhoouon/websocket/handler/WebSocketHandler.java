@@ -1,0 +1,67 @@
+package com.zhoouon.websocket.handler;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
+
+/// WebSocketHandler.java
+@Component
+public class WebSocketHandler extends TextWebSocketHandler {
+
+    private static final Map<String, Set<WebSocketSession>> SESSION_MAP = new ConcurrentHashMap<>();
+
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        String userId = getUserId(session);
+        if (userId == null || userId.isBlank()) {
+            session.close(CloseStatus.BAD_DATA.withReason("缺少 userId 参数"));
+            return;
+        }
+        SESSION_MAP.computeIfAbsent(userId, key -> new CopyOnWriteArraySet<>()).add(session);
+    }
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        String userId = getUserId(session);
+        if (userId != null) {
+            Set<WebSocketSession> sessions = SESSION_MAP.get(userId);
+            if (sessions != null) {
+                sessions.remove(session);
+                if (sessions.isEmpty()) {
+                    SESSION_MAP.remove(userId, sessions);
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        // Echo back or log if needed
+    }
+
+    public void sendMessageToUser(String userId, String message) throws IOException {
+        Set<WebSocketSession> sessions = SESSION_MAP.get(userId);
+        if (sessions == null) {
+            return;
+        }
+        TextMessage textMessage = new TextMessage(message);
+        for (WebSocketSession session : sessions) {
+            if (session.isOpen()) {
+                session.sendMessage(textMessage);
+            }
+        }
+    }
+
+    private String getUserId(WebSocketSession session) {
+        return UriComponentsBuilder.fromUri(session.getUri()).build().getQueryParams().getFirst("userId");
+    }
+}
