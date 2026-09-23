@@ -19,7 +19,7 @@ seata:
   config:
     type: nacos # 指定使用 nacos 作为配置中心
     nacos:
-      server-addr: host.docker.internal:18848
+      server-addr: 127.0.0.1:18848
       namespace:  59be4370-3745-47e6-b406-3d196ad5b2b6 # 命名空间，如果不写默认使用 Nacos 的 public 命名空间
       group: SEATA_GROUP # 我直接用 Nacos 的默认，你也可以自己起一个分组叫做 SEATA_GROUP
       username: nacos # 如果你的 nacos 没配置账号密码则不需要写这两项
@@ -30,7 +30,7 @@ seata:
     type: nacos
     nacos:
       application: seata-server # seata tc 服务注册到 nacos的服务名称，可以自定义，需与上面的 spring.application.name属性一致
-      server-addr: host.docker.internal:18848
+      server-addr: 127.0.0.1:18848
       group: SEATA_GROUP
       namespace: 59be4370-3745-47e6-b406-3d196ad5b2b6
       # cluster:
